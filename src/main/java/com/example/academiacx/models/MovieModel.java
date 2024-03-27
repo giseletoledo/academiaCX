@@ -2,7 +2,6 @@ package com.example.academiacx.models;
 
 
 import jakarta.persistence.*;
-
 @Entity
 @Table(name = "tb_movie")
 public class MovieModel {
