@@ -1,8 +1,12 @@
 package com.example.academiacx.controller;
 
+import com.example.academiacx.facades.inter.BookMarksFacade;
 import com.example.academiacx.models.UserModel;
+import com.example.academiacx.models.dto.UserBookmarkDto;
+import com.example.academiacx.repository.UserRepository;
 import com.example.academiacx.services.inter.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,27 +19,54 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BookMarksFacade bookMarksFacade;
+
     @GetMapping
-    public List<UserModel> findAll()
+    public ResponseEntity<List<UserModel>> findAll()
     {
-        return userService.listUsers();
+        List<UserModel> response = userService.listUsers();
+
+        return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/{id}")
-    public Optional<UserModel> findById(@PathVariable Long id)
+    public ResponseEntity<Optional<UserModel>> findById(@PathVariable Long id)
     {
-        return userService.findById(id);
+        Optional<UserModel> response = userService.findById(id);
+
+        return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping(value = "/bookmark/{id}")
+    public ResponseEntity<?> findFavoritesBookMark(@PathVariable Long id)
+    {
+        UserBookmarkDto response = bookMarksFacade.getFavorites(id);
+
+        return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public UserModel save(@RequestBody UserModel userModel)
+    public ResponseEntity<UserModel> save(@RequestBody UserModel userModel)
     {
-        return userService.create(userModel);
+        UserModel response = userService.create(userModel);
+
+        return response != null ? ResponseEntity.ok(response) : ResponseEntity.badRequest().build();
     }
 
     @PutMapping
-    public UserModel update(@RequestBody UserModel userModel)
+    public ResponseEntity<UserModel> update(@RequestBody UserModel userModel)
     {
-        return userService.update(userModel);
+        UserModel response = userService.update(userModel);
+
+        return response != null ? ResponseEntity.ok(response) : ResponseEntity.badRequest().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
+
+        Boolean success = userService.delete(id);
+
+        return success ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
     }
 }

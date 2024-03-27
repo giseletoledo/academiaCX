@@ -1,6 +1,8 @@
 package com.example.academiacx.services;
 
+
 import com.example.academiacx.handlers.exceptions.InvalidParamException;
+import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.UserModel;
 import com.example.academiacx.repository.UserRepository;
 import com.example.academiacx.services.inter.UserService;
@@ -15,6 +17,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+//    public PasswordEncoder passwordEncoder()
+//    {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Override
     public List<UserModel> listUsers() {
@@ -31,6 +38,15 @@ public class UserServiceImpl implements UserService {
 
         userModel.setId(null);
 
+        UserModel existUser = userRepository.findByUsername(userModel.getUsername());
+
+        if (existUser != null)
+        {
+            throw new InvalidParamException("Usuario ja existe");
+        }
+
+//        userModel.setPassword(passwordEncoder().encode(userModel.getPassword()));
+
         return userRepository.save(userModel);
     }
 
@@ -42,5 +58,19 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.save(userModel);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+
+        findById(id);
+
+        try {
+            userRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Id informado não encontrado!");
+        }
+
     }
 }
