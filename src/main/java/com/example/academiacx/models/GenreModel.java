@@ -1,6 +1,7 @@
 package com.example.academiacx.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tb_genre")
@@ -10,7 +11,8 @@ public class GenreModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String genre;
+    @NotBlank(message = "O nome do Genero é obrigatório")
+    private String genreName;
 
     public Long getId() {
         return id;
@@ -20,11 +22,11 @@ public class GenreModel {
         this.id = id;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getGenreName() {
+        return genreName;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setGenreName(String genreName) {
+        this.genreName = genreName;
     }
 }

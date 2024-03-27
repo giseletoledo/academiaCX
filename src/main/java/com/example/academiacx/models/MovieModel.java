@@ -114,4 +114,31 @@ public class MovieModel {
     public void setActors(List<ActorModel> actors) {
         this.actors = actors;
     }
+
+    public MovieModel() {
+    }
+
+    public MovieModel(Long id, String title, GenreModel genre, StudioModel studio, List<DirectorModel> directors, StreamingModel streaming, List<ActorModel> actors) {
+        this.id = id;
+        this.title = title;
+        this.genre = genre;
+        this.studio = studio;
+        this.directors = directors;
+        this.streaming = streaming;
+        this.actors = actors;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieModel{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", genre=" + genre +
+                ", studio=" + studio +
+                ", franchise=" + franchise +
+                ", directors=" + directors +
+                ", streaming=" + streaming +
+                ", actors=" + actors +
+                '}';
+    }
 }
