@@ -1,6 +1,10 @@
 package com.example.academiacx.models;
 
+import com.example.academiacx.models.dto.UserDto;
+import com.example.academiacx.models.security.RoleModel;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
@@ -10,12 +14,29 @@ public class UserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    private String username;
+
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "movie_id")
-    private MovieModel movie;
+    private String password;
 
+    @ManyToMany
+    private List<RoleModel> roles;
+
+    @ManyToMany
+    private List<MovieModel> favoritesMovies;
+
+
+    public UserModel() {
+    }
+
+    public UserModel(UserDto userDto) {
+        this.id = userDto.getId();
+        this.name = userDto.getName();
+        this.email = userDto.getEmail();
+        this.username = userDto.getUsername();
+    }
 
     public Long getId() {
         return id;
@@ -40,12 +61,46 @@ public class UserModel {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public MovieModel getMovie() {
-        return movie;
+    public String getPassword() {
+        return password;
     }
 
-    public void setMovie(MovieModel movie) {
-        this.movie = movie;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public List<RoleModel> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleModel> roles) {
+        this.roles = roles;
+    }
+
+    public List<MovieModel> getFavoritesMovies() {
+        return favoritesMovies;
+    }
+    public void setFavoritesMovies(List<MovieModel> favoritesMovies) {
+        this.favoritesMovies = favoritesMovies;
+    }
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                ", favoritesMovies=" + favoritesMovies +
+                '}';
     }
 }
