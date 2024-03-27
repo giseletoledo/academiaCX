@@ -10,7 +10,7 @@ public interface ActorService {
 
     Optional<ActorModel> findById(Long id);
 
-    ActorModel create(ActorModel ator);
+    ActorModel create(ActorModel actor);
 
-    ActorModel update(ActorModel ator);
+    ActorModel update(ActorModel actor);
 }

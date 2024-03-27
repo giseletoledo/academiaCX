@@ -1,20 +1,58 @@
 package com.example.academiacx.services;
 
+import com.example.academiacx.handlers.exceptions.InvalidParamException;
+import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.ActorModel;
+import com.example.academiacx.models.StudioModel;
+import com.example.academiacx.models.UserModel;
+import com.example.academiacx.repository.ActorRepository;
+import com.example.academiacx.repository.StudioRepository;
+import com.example.academiacx.services.inter.ActorService;
+import com.example.academiacx.services.inter.StudioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public interface ActorServiceImpl {
+public class ActorServiceImpl implements ActorService {
 
-    List<ActorModel> listActors();
+    @Autowired
+    private ActorRepository actorRepository;
 
-    Optional<ActorModel> findById(Long id);
+    @Override
+    public List<ActorModel> listActors() {
+        return actorRepository.findAll();
+    }
 
-    ActorModel create(ActorModel actor);
+    @Override
+    public Optional<ActorModel> findById(Long id) {
+        return Optional.ofNullable(actorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Actor not found with id: " + id)));
+    }
 
-    ActorModel update(ActorModel actor);
+
+    @Override
+    public ActorModel create(ActorModel actor) {
+        return actorRepository.save(actor);
+    }
+
+
+
+    @Override
+    public ActorModel update(ActorModel actor) {
+        if (actor.getId() == null) {
+            throw new InvalidParamException("Actor ID must not be null for update");
+        }
+
+        return actorRepository.findById(actor.getId())
+                .map(existingActor -> {
+                    // Copy relevant fields from actor to existingActor
+                    existingActor.setName(actor.getName());
+                    // ...copy other fields as needed
+                    return actorRepository.save(existingActor);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Actor not found with id: " + actor.getId()));
+    }
 
 }
