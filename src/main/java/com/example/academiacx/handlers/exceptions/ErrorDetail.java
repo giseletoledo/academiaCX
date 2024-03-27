@@ -1,6 +1,6 @@
 package com.example.academiacx.handlers.exceptions;
 
-public class DetalhesErro {
+public class ErrorDetail {
 
     private String campo;
     private Long codigo;
@@ -10,11 +10,11 @@ public class DetalhesErro {
     private String mensagemDesenvolvedor;
 
 
-    public DetalhesErro() {
+    public ErrorDetail() {
 
     }
 
-    public DetalhesErro(String titulo, Long codigo, Long status, Long timestamp, String mensagemDesenvolvedor) {
+    public ErrorDetail(String titulo, Long codigo, Long status, Long timestamp, String mensagemDesenvolvedor) {
         this.codigo = codigo;
         this.titulo = titulo;
         this.status = status;
@@ -22,7 +22,7 @@ public class DetalhesErro {
         this.mensagemDesenvolvedor = mensagemDesenvolvedor;
     }
 
-    public DetalhesErro(String titulo, Long codigo, Long status, Long timestamp, String mensagemDesenvolvedor, String campo) {
+    public ErrorDetail(String titulo, Long codigo, Long status, Long timestamp, String mensagemDesenvolvedor, String campo) {
         this.codigo = codigo;
         this.titulo = titulo;
         this.status = status;
