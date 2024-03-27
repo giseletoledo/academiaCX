@@ -1,6 +1,6 @@
 package com.example.academiacx.controller;
 
-import com.example.academiacx.handlers.exceptions.RecursoNaoEncontradoException;
+import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.ActorModel;
 import com.example.academiacx.services.ActorServiceImpl;
 
@@ -43,7 +43,7 @@ public class ActorController {
         try {
             ActorModel atorAtualizado = actorService.update(ator);
             return ResponseEntity.ok(atorAtualizado);
-        } catch (RecursoNaoEncontradoException e) {
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
