@@ -1,6 +1,9 @@
 package com.example.academiacx.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -11,19 +14,42 @@ public class MovieModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String genre;
 
+    @NotBlank(message = "O Titulo é obrigatório")
+    private String title;
+
+    @NotNull(message = "O Genero é Obrigatório")
+    @Valid
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private GenreModel genre;
+
+    @NotNull(message = "O Estudio deve ser informado")
+    @Valid
+    @ManyToOne
+    @JoinColumn(name = "studio_id")
     private StudioModel studio;
 
+    @ManyToOne
+    @JoinColumn(name = "franchise_id")
     private FranchiseModel franchise;
 
+    @NotNull
+    @Valid
+    @ManyToMany(mappedBy = "movies")
     private List<DirectorModel> directors;
 
-    private List<StreamingModel> streamingServices;
+    @ManyToOne
+    @JoinColumn(name = "streaming_id")
+    private StreamingModel streaming;
 
-    public MovieModel() {
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "movie_actor",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id")
+    )
+    private List<ActorModel> actors;
 
     public Long getId() {
         return id;
@@ -41,11 +67,11 @@ public class MovieModel {
         this.title = title;
     }
 
-    public String getGenre() {
+    public GenreModel getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(GenreModel genre) {
         this.genre = genre;
     }
 
@@ -73,25 +99,19 @@ public class MovieModel {
         this.directors = directors;
     }
 
-    public List<StreamingModel> getStreamingServices() {
-        return streamingServices;
+    public StreamingModel getStreaming() {
+        return streaming;
     }
 
-    public void setStreamingServices(List<StreamingModel> streamingServices) {
-        this.streamingServices = streamingServices;
+    public void setStreaming(StreamingModel streaming) {
+        this.streaming = streaming;
     }
 
-    @Override
-    public String toString() {
-        return "MovieModel{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", studio=" + studio +
-                ", franchise=" + franchise +
-                ", directors=" + directors +
-                ", streamingServices=" + streamingServices +
-                '}';
+    public List<ActorModel> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<ActorModel> actors) {
+        this.actors = actors;
     }
 }
-
