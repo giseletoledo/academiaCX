@@ -8,11 +8,22 @@ public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-
+    private Long id;
     private String name;
-
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
+    private MovieModel movie;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -30,11 +41,11 @@ public class UserModel {
         this.email = email;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public MovieModel getMovie() {
+        return movie;
     }
 
-    public Long getId() {
-        return id;
+    public void setMovie(MovieModel movie) {
+        this.movie = movie;
     }
 }
