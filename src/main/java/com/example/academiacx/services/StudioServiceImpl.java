@@ -1,5 +1,6 @@
 package com.example.academiacx.services;
 
+import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.StudioModel;
 import com.example.academiacx.repository.StudioRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudioServiceImpl implements StudioService {
@@ -16,23 +18,47 @@ public class StudioServiceImpl implements StudioService {
     private StudioRepository studioRepository;
 
     @Override
-    public List<StudioModel> findAll() {
+    public List<StudioModel> list() {
         return studioRepository.findAll();
     }
 
     @Override
-    public StudioModel findById(Long id) {
-        return studioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Studio not found with id: " + id));
+    public Optional<StudioModel> findById(Long id) {
+
+        return studioRepository.findById(id);
     }
 
     @Override
-    public StudioModel save(StudioModel studio) {
-        return studioRepository.save(studio);
+    public Optional<StudioModel> findByName(String name) {
+
+        return Optional.ofNullable(studioRepository.findByName(name));
     }
 
- /*   @Override
-    public void deleteById(Long id) {
-        studioRepository.deleteById(id);
-    }*/
-}
+    @Override
+    public StudioModel create(StudioModel studioModel) {
+        studioModel.setId(null);
 
+        return studioRepository.save(studioModel);
+    }
+
+    @Override
+    public StudioModel update(StudioModel studioModel) {
+        if(studioModel.getId() == null || findById(studioModel.getId()).isEmpty()) {
+            throw new InvalidParamException("Id não encontrado");
+        }
+
+        return studioRepository.save(studioModel);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        findById(id);
+
+        try {
+            studioRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Id informado não encontrado!");
+        }
+    }
+}
