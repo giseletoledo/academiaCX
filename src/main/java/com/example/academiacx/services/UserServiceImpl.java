@@ -1,6 +1,6 @@
 package com.example.academiacx.services;
 
-import com.example.academiacx.handlers.exceptions.ParametroInvalidoException;
+import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.models.UserModel;
 import com.example.academiacx.repository.UserRepository;
 import com.example.academiacx.services.inter.UserService;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     public UserModel update(UserModel userModel) {
 
         if(userModel.getId() == null || findById(userModel.getId()).isEmpty()) {
-            throw new ParametroInvalidoException("Id não encontrado");
+            throw new InvalidParamException("Id não encontrado");
         }
 
         return userRepository.save(userModel);
