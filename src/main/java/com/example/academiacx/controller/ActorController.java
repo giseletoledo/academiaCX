@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/atores")
+@RequestMapping("/actors")
 public class ActorController {
 
 
