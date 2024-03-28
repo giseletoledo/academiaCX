@@ -15,4 +15,6 @@ public interface MovieService {
     MovieModel update(MovieModel movieModel);
 
     List<MovieModel> getUser(Long id);
+
+    void delete(Long id);
 }

@@ -1,5 +1,6 @@
 package com.example.academiacx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -37,6 +38,7 @@ public class MovieModel {
     @NotNull
     @Valid
     @ManyToMany(mappedBy = "movies")
+    @JsonIgnoreProperties("directors")
     private List<DirectorModel> directors;
 
     @ManyToOne
@@ -44,12 +46,30 @@ public class MovieModel {
     private StreamingModel streaming;
 
     @ManyToMany
+    @JsonIgnoreProperties("actors")
     @JoinTable(
             name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id")
     )
     private List<ActorModel> actors;
+
+    public MovieModel(String title, GenreModel genre, StudioModel studio) {
+        this.title = title;
+        this.genre = genre;
+        this.studio = studio;
+    }
+
+    public MovieModel(String title, GenreModel genre, StudioModel studio, FranchiseModel franchise, List<DirectorModel> directors, StreamingModel streaming, List<ActorModel> actors) {
+        this.title = title;
+        this.genre = genre;
+        this.studio = studio;
+        this.franchise = franchise;
+        this.directors = directors;
+        this.streaming = streaming;
+        this.actors = actors;
+    }
+
 
     public Long getId() {
         return id;
