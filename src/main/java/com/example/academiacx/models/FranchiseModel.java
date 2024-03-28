@@ -1,5 +1,6 @@
 package com.example.academiacx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -32,7 +33,8 @@ public class FranchiseModel {
 
     @NotNull(message = "Os Filmes da franquia é obrigatório")
     @Valid
-    @OneToMany(mappedBy = "franchise")
+    @JsonIgnore
+    @OneToMany(mappedBy = "franchise", cascade = CascadeType.PERSIST)
     private List<MovieModel> movies;
 
     public Long getId() {
@@ -75,6 +77,23 @@ public class FranchiseModel {
     }
     public FranchiseModel() {
     }
+
+    public FranchiseModel(String name) {
+        this.name = name;
+    }
+
+    public FranchiseModel(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public FranchiseModel(String name, GenreModel genre, StudioModel studio, List<MovieModel> movies) {
+        this.name = name;
+        this.genre = genre;
+        this.studio = studio;
+        this.movies = movies;
+    }
+
     public FranchiseModel(Long id, String name, GenreModel genre, StudioModel studio, List<MovieModel> movies) {
         this.id = id;
         this.name = name;
