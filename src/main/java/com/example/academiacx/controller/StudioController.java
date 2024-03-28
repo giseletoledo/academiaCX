@@ -31,7 +31,7 @@ public class StudioController {
     {
         Optional<StudioModel> response = studioService.findById(id);
 
-        return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
+        return response.isPresent() ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/name/{name}")
@@ -39,7 +39,7 @@ public class StudioController {
     {
         Optional<StudioModel> response = studioService.findByName(name);
 
-        return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
+        return response.isPresent() ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
 
     //    @PreAuthorize("hasRole('STUDIO_SAVE')")
@@ -66,7 +66,7 @@ public class StudioController {
 
         Boolean success = studioService.delete(id);
 
-        return success ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
+        return Boolean.TRUE.equals(success) ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
     }
 }
 

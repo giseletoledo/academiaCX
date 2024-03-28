@@ -1,5 +1,7 @@
 package com.example.academiacx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -16,8 +18,8 @@ public class StudioModel {
     private String name;
 
     private String country;
-
     @OneToMany(mappedBy = "studio")
+    @JsonIgnore
     private List<MovieModel> movies;
 
     public Long getId() {
@@ -53,6 +55,16 @@ public class StudioModel {
     }
 
     public StudioModel() {
+    }
+
+    public StudioModel(String name, String country) {
+        this.name = name;
+        this.country = country;
+    }
+
+    public StudioModel(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public StudioModel(Long id, String name, String country, List<MovieModel> movies) {

@@ -36,8 +36,6 @@ public class StudioServiceImpl implements StudioService {
 
     @Override
     public StudioModel create(StudioModel studioModel) {
-        studioModel.setId(null);
-
         return studioRepository.save(studioModel);
     }
 
