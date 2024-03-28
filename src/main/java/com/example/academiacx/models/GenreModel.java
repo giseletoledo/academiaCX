@@ -29,4 +29,24 @@ public class GenreModel {
     public void setGenreName(String genreName) {
         this.genreName = genreName;
     }
+
+    public GenreModel() {
+    }
+
+    public GenreModel(String genreName) {
+        this.genreName = genreName;
+    }
+
+    public GenreModel(Long id, String genreName) {
+        this.id = id;
+        this.genreName = genreName;
+    }
+
+    @Override
+    public String toString() {
+        return "GenreModel{" +
+                "id=" + id +
+                ", genreName='" + genreName + '\'' +
+                '}';
+    }
 }
