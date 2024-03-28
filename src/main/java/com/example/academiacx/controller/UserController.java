@@ -3,7 +3,6 @@ package com.example.academiacx.controller;
 import com.example.academiacx.facades.inter.BookMarksFacade;
 import com.example.academiacx.models.UserModel;
 import com.example.academiacx.models.dto.UserBookmarkDto;
-import com.example.academiacx.repository.UserRepository;
 import com.example.academiacx.services.inter.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class UserController {
     {
         Optional<UserModel> response = userService.findById(id);
 
-        return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
+        return response.isPresent() ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/bookmark/{id}")
@@ -67,6 +66,6 @@ public class UserController {
 
         Boolean success = userService.delete(id);
 
-        return success ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
+        return Boolean.TRUE.equals(success) ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
     }
 }
