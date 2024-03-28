@@ -13,4 +13,6 @@ public interface ActorService {
     ActorModel create(ActorModel actor);
 
     ActorModel update(ActorModel actor);
+
+    void delete(ActorModel actor);
 }

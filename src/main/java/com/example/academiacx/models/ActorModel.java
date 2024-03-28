@@ -1,5 +1,6 @@
 package com.example.academiacx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -16,7 +17,9 @@ public class ActorModel {
     @NotBlank(message = "O nome do diretor é obrigatório")
     private String name;
 
+
     @ManyToMany(mappedBy = "actors")
+    @JsonIgnore
     private List<MovieModel> movies;
 
     public Long getId() {
@@ -44,6 +47,15 @@ public class ActorModel {
     }
 
     public ActorModel() {
+    }
+
+    public ActorModel(String name) {
+        this.name = name;
+    }
+
+    public ActorModel(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public ActorModel(Long id, String name, List<MovieModel> movies) {

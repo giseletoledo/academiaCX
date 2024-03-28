@@ -33,29 +33,29 @@ public class ActorController {
 
     @PostMapping
     public ResponseEntity<ActorModel> create(@RequestBody ActorModel ator) {
-        ActorModel novoAtor = actorService.create(ator);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoAtor);
+        ActorModel newActor = actorService.create(ator);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newActor);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ActorModel> update(@PathVariable Long id, @RequestBody ActorModel ator) {
-        ator.setId(id);
+    public ResponseEntity<ActorModel> update(@PathVariable Long id, @RequestBody ActorModel actor) {
+        actor.setId(id);
         try {
-            ActorModel atorAtualizado = actorService.update(ator);
-            return ResponseEntity.ok(atorAtualizado);
+            ActorModel updateActor = actorService.update(actor);
+            return ResponseEntity.ok(updateActor);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    /*@DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteActor(@PathVariable ActorModel id) {
         try {
             actorService.delete(id);
             return ResponseEntity.noContent().build();
-        } catch (RecursoNaoEncontradoException e) {
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-    }*/
+    }
 }
 

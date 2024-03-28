@@ -3,12 +3,8 @@ package com.example.academiacx.services;
 import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.ActorModel;
-import com.example.academiacx.models.StudioModel;
-import com.example.academiacx.models.UserModel;
 import com.example.academiacx.repository.ActorRepository;
-import com.example.academiacx.repository.StudioRepository;
 import com.example.academiacx.services.inter.ActorService;
-import com.example.academiacx.services.inter.StudioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,15 +26,10 @@ public class ActorServiceImpl implements ActorService {
     public Optional<ActorModel> findById(Long id) {
         return Optional.ofNullable(actorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Actor not found with id: " + id)));
     }
-
-
     @Override
     public ActorModel create(ActorModel actor) {
         return actorRepository.save(actor);
     }
-
-
-
     @Override
     public ActorModel update(ActorModel actor) {
         if (actor.getId() == null) {
@@ -54,5 +45,6 @@ public class ActorServiceImpl implements ActorService {
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Actor not found with id: " + actor.getId()));
     }
-
+    @Override
+    public void delete(ActorModel actor) { actorRepository.delete(actor);}
 }
