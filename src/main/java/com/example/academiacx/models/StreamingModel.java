@@ -1,5 +1,6 @@
 package com.example.academiacx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -19,6 +20,7 @@ public class StreamingModel {
     private String url;
 
     @OneToMany(mappedBy = "streaming")
+    @JsonIgnore
     private List<MovieModel> movies;
 
     public Long getId() {
@@ -53,6 +55,17 @@ public class StreamingModel {
         this.movies = movies;
     }
     public StreamingModel() {
+    }
+
+
+    public StreamingModel(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
+
+    public StreamingModel(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public StreamingModel(Long id, String name, String url, List<MovieModel> movies) {
