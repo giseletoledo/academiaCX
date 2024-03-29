@@ -2,7 +2,7 @@ package com.example.academiacx.controller;
 
 import com.example.academiacx.facades.inter.BookMarksFacade;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
-import com.example.academiacx.handlers.exceptions.SaveFavoritesException;
+import com.example.academiacx.models.UserBookmarkRequest;
 import com.example.academiacx.models.UserModel;
 import com.example.academiacx.models.dto.UserBookmarkDto;
 import com.example.academiacx.services.inter.UserService;
@@ -11,12 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Logger;
+
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
+
+    private static final Logger logger = Logger.getLogger(UserController.class.getName());
+
 
     @Autowired
     private UserService userService;
@@ -73,15 +78,18 @@ public class UserController {
     }
 
     @PostMapping("/{id}/bookmark")
-    public ResponseEntity<String> saveFavoriteMovie(@PathVariable Long id, @RequestBody Long movieId) {
+    public ResponseEntity<String> saveFavoriteMovies(@PathVariable Long id, @RequestBody UserBookmarkRequest requestBody) {
         try {
-            bookMarksFacade.saveFavorites(id, movieId);
-            return ResponseEntity.ok("Favorite movie saved successfully");
+            List<Long> movieIds = requestBody.getMovieIds();
+
+            bookMarksFacade.saveFavorites(id, movieIds);
+
+            return ResponseEntity.ok("Favorite movies saved successfully");
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to save favorite movie: " + e.getMessage());
+                    .body("Failed to save favorite movies: " + e.getMessage());
         }
     }
 

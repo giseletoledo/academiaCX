@@ -13,6 +13,5 @@ public interface BookMarksFacade {
 
     UserBookmarkDto getFavorites(Long id);
 
-    void saveFavorites(Long userId, Long movieId);
-
+    void saveFavorites(Long id, List<Long> movieIds);
 }

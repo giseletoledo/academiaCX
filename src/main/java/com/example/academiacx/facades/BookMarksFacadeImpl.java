@@ -59,26 +59,24 @@ public class BookMarksFacadeImpl implements BookMarksFacade {
         return userBookmarkDto;
     }
 
-    @Override
-    public void saveFavorites(Long userId, Long movieId) {
+    public void saveFavorites(Long userId, List<Long> movieIds) {
         Logger logger = LoggerFactory.getLogger(getClass());
         try {
             Optional<UserModel> userModelOptional = userService.findById(userId);
             if (userModelOptional.isPresent()) {
                 UserModel user = userModelOptional.get();
 
-                Optional<MovieModel> movieOptional = movieService.findById(movieId);
-                if (movieOptional.isPresent()) {
-                    MovieModel movie = movieOptional.get();
-
-                    List<MovieModel> favoriteMovies = user.getFavoritesMovies();
-                    favoriteMovies.add(movie);
-
-                    userService.update(user);
-                    logger.info("Favorite movie {} saved successfully for user with id {}", movie.getTitle(), userId);
-                } else {
-                    throw new ResourceNotFoundException("Movie with id " + movieId + " not found");
+                for (Long movieId : movieIds) {
+                    Optional<MovieModel> movieOptional = movieService.findById(movieId);
+                    if (movieOptional.isPresent()) {
+                        MovieModel movie = movieOptional.get();
+                        user.addFavoriteMovie(movie);
+                    } else {
+                        throw new ResourceNotFoundException("Movie with id " + movieId + " not found");
+                    }
                 }
+                userService.update(user);
+                logger.info("Favorite movies saved successfully for user with id {}", userId);
             } else {
                 throw new ResourceNotFoundException("User with id " + userId + " not found");
             }

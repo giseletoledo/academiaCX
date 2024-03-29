@@ -4,6 +4,7 @@ import com.example.academiacx.models.dto.UserDto;
 import com.example.academiacx.models.security.RoleModel;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -91,6 +92,14 @@ public class UserModel {
     public void setFavoritesMovies(List<MovieModel> favoritesMovies) {
         this.favoritesMovies = favoritesMovies;
     }
+
+    public void addFavoriteMovie(MovieModel movie) {
+        if (this.favoritesMovies == null) {
+            this.favoritesMovies = new ArrayList<>();
+        }
+        this.favoritesMovies.add(movie);
+    }
+
     @Override
     public String toString() {
         return "UserModel{" +
