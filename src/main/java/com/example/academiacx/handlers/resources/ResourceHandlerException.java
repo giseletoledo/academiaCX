@@ -15,13 +15,13 @@ public class ResourceHandlerException {
     @ExceptionHandler(InvalidParamException.class)
     public ResponseEntity<ErrorDetail> handlerParametroInvalidoException(InvalidParamException exception, HttpServletRequest request)
     {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ErrorDetail(exception.getMessage(), 406l, 406l, System.currentTimeMillis(), "http://localhost:8080/erros/406"));
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ErrorDetail(exception.getMessage(), 406L, 406L, System.currentTimeMillis(), "http://localhost:8080/erros/406"));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDetail> handlerRecursoNaoEntradoException(ResourceNotFoundException exception, HttpServletRequest request)
     {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ErrorDetail(exception.getMessage(), 406l, 406l, System.currentTimeMillis(), "http://localhost:8080/erros/406"));
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ErrorDetail(exception.getMessage(), 406L, 406L, System.currentTimeMillis(), "http://localhost:8080/erros/406"));
     }
 
 }
