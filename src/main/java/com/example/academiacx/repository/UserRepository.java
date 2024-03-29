@@ -1,9 +1,12 @@
 package com.example.academiacx.repository;
 
+import com.example.academiacx.models.MovieModel;
 import com.example.academiacx.models.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserModel, Long> {
 

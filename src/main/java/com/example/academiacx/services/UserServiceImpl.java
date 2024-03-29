@@ -3,6 +3,7 @@ package com.example.academiacx.services;
 
 import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
+import com.example.academiacx.models.MovieModel;
 import com.example.academiacx.models.UserModel;
 import com.example.academiacx.repository.UserRepository;
 import com.example.academiacx.services.inter.UserService;

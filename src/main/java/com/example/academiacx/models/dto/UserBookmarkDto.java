@@ -6,6 +6,15 @@ import com.example.academiacx.models.MovieModel;
 import java.util.List;
 public class UserBookmarkDto {
 
+    public UserBookmarkDto() {
+    }
+
+    public UserBookmarkDto(UserDto userDto, List<MovieModel> movies, List<DirectorModel> directors) {
+        this.userDto = userDto;
+        this.movies = movies;
+        this.directors = directors;
+    }
+
     private UserDto userDto;
     private List<MovieModel> movies;
 
@@ -32,15 +41,6 @@ public class UserBookmarkDto {
     }
 
     public void setDirectors(List<DirectorModel> directors) {
-        this.directors = directors;
-    }
-
-    public UserBookmarkDto() {
-    }
-
-    public UserBookmarkDto(UserDto userDto, List<MovieModel> movies, List<DirectorModel> directors) {
-        this.userDto = userDto;
-        this.movies = movies;
         this.directors = directors;
     }
 
