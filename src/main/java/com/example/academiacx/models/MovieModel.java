@@ -54,20 +54,23 @@ public class MovieModel {
     )
     private List<ActorModel> actors;
 
+    public MovieModel() {
+    }
+
+    public MovieModel(Long id, String title, GenreModel genre, StudioModel studio, List<DirectorModel> directors, StreamingModel streaming, List<ActorModel> actors) {
+        this.id = id;
+        this.title = title;
+        this.genre = genre;
+        this.studio = studio;
+        this.directors = directors;
+        this.streaming = streaming;
+        this.actors = actors;
+    }
+
     public MovieModel(String title, GenreModel genre, StudioModel studio) {
         this.title = title;
         this.genre = genre;
         this.studio = studio;
-    }
-
-    public MovieModel(String title, GenreModel genre, StudioModel studio, FranchiseModel franchise, List<DirectorModel> directors, StreamingModel streaming, List<ActorModel> actors) {
-        this.title = title;
-        this.genre = genre;
-        this.studio = studio;
-        this.franchise = franchise;
-        this.directors = directors;
-        this.streaming = streaming;
-        this.actors = actors;
     }
 
 
@@ -132,19 +135,6 @@ public class MovieModel {
     }
 
     public void setActors(List<ActorModel> actors) {
-        this.actors = actors;
-    }
-
-    public MovieModel() {
-    }
-
-    public MovieModel(Long id, String title, GenreModel genre, StudioModel studio, List<DirectorModel> directors, StreamingModel streaming, List<ActorModel> actors) {
-        this.id = id;
-        this.title = title;
-        this.genre = genre;
-        this.studio = studio;
-        this.directors = directors;
-        this.streaming = streaming;
         this.actors = actors;
     }
 
