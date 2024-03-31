@@ -2,8 +2,11 @@ package com.example.academiacx.controller;
 
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.MovieModel;
+import com.example.academiacx.services.MovieServiceImpl;
 import com.example.academiacx.services.inter.MovieService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ public class MovieController {
 
     @Autowired
     private MovieService movieService;
+    private static final Logger logger = LoggerFactory.getLogger(MovieController.class);
 
     @GetMapping
     public List<MovieModel> findAllMovies() {
@@ -36,9 +40,10 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newMovie);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<MovieModel> updateMovie(@PathVariable Long id, @RequestBody MovieModel movie) {
-        movie.setId(id);
+    @PutMapping
+    public ResponseEntity<MovieModel> updateMovie(@RequestBody MovieModel movie) {
+        logger.info("Dados recebidos para atualização: {}", movie);
+
         try {
             MovieModel updatedMovie = movieService.update(movie);
             return ResponseEntity.ok(updatedMovie);
