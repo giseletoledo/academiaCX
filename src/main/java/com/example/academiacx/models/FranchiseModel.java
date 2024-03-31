@@ -101,4 +101,15 @@ public class FranchiseModel {
         this.studio = studio;
         this.movies = movies;
     }
+
+    @Override
+    public String toString() {
+        return "FranchiseModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", genre=" + genre +
+                ", studio=" + studio +
+                ", movies=" + movies +
+                '}';
+    }
 }
