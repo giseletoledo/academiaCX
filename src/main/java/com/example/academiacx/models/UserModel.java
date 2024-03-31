@@ -2,6 +2,8 @@ package com.example.academiacx.models;
 
 import com.example.academiacx.models.dto.UserDto;
 import com.example.academiacx.models.security.RoleModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -23,9 +25,13 @@ public class UserModel {
     private String password;
 
     @ManyToMany
+    @JsonManagedReference
+    @JsonIgnore
     private List<RoleModel> roles;
 
     @ManyToMany
+    @JsonManagedReference
+    @JsonIgnore
     private List<MovieModel> favoritesMovies;
 
 
@@ -77,6 +83,7 @@ public class UserModel {
     public void setUsername(String username) {
         this.username = username;
     }
+
 
     public List<RoleModel> getRoles() {
         return roles;

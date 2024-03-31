@@ -1,6 +1,7 @@
 package com.example.academiacx.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -13,14 +14,15 @@ public class StreamingModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O Nome do Stremming é obrigatório")
+    @NotBlank(message = "O Nome do Streaming é obrigatório")
     private String name;
 
-    @NotBlank(message = "A Url do Stremming é obrigatória")
+    @NotBlank(message = "A Url do Streaming é obrigatória")
     private String url;
 
     @OneToMany(mappedBy = "streaming")
     @JsonIgnore
+    @JsonManagedReference
     private List<MovieModel> movies;
 
     public Long getId() {
