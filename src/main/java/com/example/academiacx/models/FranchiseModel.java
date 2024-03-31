@@ -107,9 +107,6 @@ public class FranchiseModel {
         return "FranchiseModel{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", genre=" + genre +
-                ", studio=" + studio +
-                ", movies=" + movies +
-                '}';
+                '}';  // Exclude genre, studio, and movies
     }
 }

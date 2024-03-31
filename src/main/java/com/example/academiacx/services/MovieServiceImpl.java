@@ -43,7 +43,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieModel create(MovieModel movieModel) {
-        return movieRepository.save(movieModel);
+
+        MovieModel movieSaved = movieRepository.save(movieModel);
+        logger.info("Filme salvo com sucesso: {}", movieSaved.getTitle());
+        return movieSaved;
     }
 
     @Override

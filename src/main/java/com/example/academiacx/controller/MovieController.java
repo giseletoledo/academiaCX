@@ -2,7 +2,6 @@ package com.example.academiacx.controller;
 
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.MovieModel;
-import com.example.academiacx.services.MovieServiceImpl;
 import com.example.academiacx.services.inter.MovieService;
 
 import org.slf4j.Logger;
@@ -36,6 +35,7 @@ public class MovieController {
 
     @PostMapping
     public ResponseEntity<MovieModel> createMovie(@RequestBody MovieModel movie) {
+        logger.info("Dados recebidos para salvar filme: {}", movie);
         MovieModel newMovie = movieService.create(movie);
         return ResponseEntity.status(HttpStatus.CREATED).body(newMovie);
     }

@@ -1,8 +1,4 @@
 package com.example.academiacx.models;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -143,12 +139,6 @@ public class MovieModel {
         return "MovieModel{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", genre=" + genre +
-                ", studio=" + studio +
-                ", franchise=" + franchise +
-                ", directors=" + directors +
-                ", streaming=" + streaming +
-                ", actors=" + actors +
                 '}';
     }
 }
