@@ -1,6 +1,8 @@
 package com.example.academiacx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -37,8 +39,7 @@ public class MovieModel {
 
     @NotNull
     @Valid
-    @ManyToMany(mappedBy = "movies")
-    @JsonIgnoreProperties("directors")
+    @ManyToMany(mappedBy = "movies", cascade = CascadeType.MERGE)
     private List<DirectorModel> directors;
 
     @ManyToOne
@@ -46,7 +47,6 @@ public class MovieModel {
     private StreamingModel streaming;
 
     @ManyToMany
-    @JsonIgnoreProperties("actors")
     @JoinTable(
             name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),
