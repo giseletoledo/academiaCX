@@ -1,11 +1,15 @@
 package com.example.academiacx.services;
 
+import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.MovieModel;
 import com.example.academiacx.models.UserModel;
 import com.example.academiacx.repository.MovieRepository;
+import com.example.academiacx.services.inter.FranchiseService;
 import com.example.academiacx.services.inter.MovieService;
 import com.example.academiacx.services.inter.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,12 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    FranchiseService franchiseService;
+
+    private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
+
 
     @Override
     public List<MovieModel> list() {
@@ -37,8 +47,16 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieModel update(MovieModel movieModel) {
-        return movieRepository.save(movieModel);
+    public MovieModel update(MovieModel movie) {
+
+        if(movie.getId() == null || findById(movie.getId()).isEmpty()) {
+            throw new InvalidParamException("Id não encontrado");
+        }
+            logger.info("Preparando para atualizar o filme: {}", movie.getTitle());
+            // Outras operações antes de salvar, se necessário
+           MovieModel updateMovie = movieRepository.save(movie);
+            logger.info("Filme atualizado com sucesso: {}", movie.getTitle());
+        return updateMovie;
     }
 
     @Override
