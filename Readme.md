@@ -1,12 +1,59 @@
 ## API de Gerenciamento de Filmes
 ### Descrição
 A API de Gerenciamento de Filmes é uma aplicação para gerenciar informações sobre filmes, incluindo detalhes como título, gênero, estúdio, diretores, elenco, serviço de streaming, entre outros.
+Obs: Descrição da API atualizada no link do postman na descrição ao lado.
 
 ### Recursos Disponíveis
 **Filmes**: Os filmes são a entidade principal da API e possuem diversos atributos para descrever suas características.<br>
 **Usuários**: Usuários podem adicionar os filmes favoritos
 
 #### Endpoints da API
+
+## Endpoint do Usuário
+
+### GET /users
+
+Este endpoint envia uma solicitação HTTP GET para recuperar uma lista de usuários do servidor.
+
+#### Requisição
+
+- Método: GET
+- URL: `http://localhost:8080/users`
+
+#### Resposta
+
+A resposta será em formato JSON com uma matriz de objetos de usuário, cada um contendo os seguintes campos:
+
+- `id`: O identificador único do usuário.
+- `name`: O nome do usuário.
+- `username`: O nome de usuário do usuário.
+- `email`: O endereço de e-mail do usuário.
+- `password`: A senha do usuário.
+
+O status da última execução foi 200, indicando uma solicitação bem-sucedida.
+
+#### Exemplo de Resposta
+
+```json
+[
+    {
+        "id": 1,
+        "name": "João Silva",
+        "username": "joaosilva",
+        "email": "joao@example.com",
+        "password": "senha123"
+    },
+    {
+        "id": 2,
+        "name": "Maria Souza",
+        "username": "mariasouza",
+        "email": "maria@example.com",
+        "password": "senha456"
+    }
+]
+```
+
+
 **GET /movies**: Retorna todos os filmes cadastrados.<br>
 **GET /movies/{id}**: Retorna os detalhes de um filme específico com base no seu ID.<br>
 **POST /movies**: Adiciona um novo filme ao sistema.<br>
@@ -50,40 +97,129 @@ Certifique-se de que todas as informações necessárias estão disponíveis ant
 
 Por favor, observe essas restrições e pré-requisitos ao utilizar a API para garantir o correto funcionamento das operações de cadastro de filmes.
 
-### Corpo da Requisição
-**id (número)**: O identificador único para o filme.<br>
-**title (string)**: O título do filme.<br>
-**genre (objeto)**: Detalhes sobre o gênero do filme.<br>
-**id (número)**: O identificador único para o gênero.<br>
-**genreName (string)**: O nome do gênero.<br>
-**studio (objeto)**: Detalhes sobre o estúdio que produz o filme.<br>
-**id (número)**: O identificador único para o estúdio.<br>
-**name (string)**: O nome do estúdio.<br>
-**country (string)**: O país onde o estúdio está localizado.<br>
-**franchise (objeto)**: Detalhes sobre a franquia à qual o filme pertence.<br>
-**id (número)**: O identificador único para a franquia.<br>
-**name (string)**: O nome da franquia.<br>
-**genre (objeto)**: Detalhes sobre o gênero da franquia.<br>
-**id (número)**: O identificador único para o gênero.<br>
-**genreName (string)**: O nome do gênero.<br>
-**studio (objeto)**: Detalhes sobre o estúdio que produz a franquia.<br>
-**id (número)**: O identificador único para o estúdio.<br>
-**name (string)**: O nome do estúdio.<br>
-**country (string)**: O país onde o estúdio está localizado.<br>
-**directors (array)**: Um array de objetos contendo detalhes sobre os diretores do filme.<br>
-**id (número)**: O identificador único para o diretor.<br>
-**name (string)**: O nome do diretor.<br>
-**movies (array)**: Um array de filmes dirigidos pelo diretor.<br>
-**streaming (objeto)**: Detalhes sobre a plataforma de streaming para o filme.<br>
-**id (número)**: O identificador único para a plataforma de streaming.<br>
-**name (string)**: O nome da plataforma de streaming.<br>
-**url (string)**: O URL para fazer streaming do filme.<br>
-**actors (array)**: Um array de objetos contendo detalhes sobre os atores no filme.<br>
-**id (número)**: O identificador único para o ator.
-**name (string)**: O nome do ator.
 
+## Endpoint de Filmes
 
+### GET /movies
 
+Este endpoint envia uma solicitação HTTP GET para recuperar uma lista de filmes do servidor.
 
+#### Requisição
 
+- Método: GET
+- URL: `http://localhost:8080/movies`
 
+#### Resposta
+
+A resposta será em formato JSON com uma matriz de objetos de filme, cada um contendo os seguintes campos:
+
+- `id`: O identificador único do filme.
+- `title`: O título do filme.
+- `genre`: Detalhes sobre o gênero do filme, incluindo `id` e `genreName`.
+- `studio`: Detalhes sobre o estúdio que produziu o filme, incluindo `id`, `name` e `country`.
+- `franchise`: Detalhes sobre a franquia à qual o filme pertence, incluindo `id`, `name`, `genre` e `studio`.
+- `streaming`: Detalhes sobre a plataforma de streaming do filme, incluindo `id`, `name` e `url`.
+- `actors`: Uma matriz de objetos contendo detalhes sobre os atores no filme, cada um com `id` e `name`.
+- `directors`: Uma matriz de objetos contendo detalhes sobre os diretores do filme, cada um com `id` e `name`.
+
+O status da última execução foi 200, indicando uma solicitação bem-sucedida.
+
+#### Exemplo de Resposta
+
+```json
+[
+    {
+        "id": 1,
+        "title": "Vingadores: Ultimato",
+        "genre": {
+            "id": 1,
+            "genreName": "Ação"
+        },
+        "studio": {
+            "id": 1,
+            "name": "Marvel Studios",
+            "country": "EUA"
+        },
+        "franchise": {
+            "id": 1,
+            "name": "Marvel Cinematic Universe",
+            "genre": {
+                "id": 1,
+                "genreName": "Ação"
+            },
+            "studio": {
+                "id": 1,
+                "name": "Marvel Studios",
+                "country": "EUA"
+            }
+        },
+        "streaming": {
+            "id": 1,
+            "name": "DisneyPlus",
+            "url": "http://www.disneyplus.com.br"
+        },
+        "actors": [
+            {
+                "id": 1,
+                "name": "Samuel L. Jackson"
+            },
+            {
+                "id": 2,
+                "name": "Brie Larson"
+            },
+            {
+                "id": 3,
+                "name": "Chris Evans"
+            }
+        ],
+        "directors": [
+            {
+                "id": 1,
+                "name": "Joe Russo"
+            },
+            {
+                "id": 2,
+                "name": "Anthony Russo"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Homem-Aranha: Sem Volta Para Casa",
+        "genre": {
+            "id": 1,
+            "genreName": "Ação"
+        },
+        "studio": {
+            "id": 1,
+            "name": "Marvel Studios",
+            "country": "EUA"
+        },
+        "franchise": {
+            "id": 1,
+            "name": "Marvel Cinematic Universe",
+            "genre": {
+                "id": 1,
+                "genreName": "Ação"
+            },
+            "studio": {
+                "id": 1,
+                "name": "Marvel Studios",
+                "country": "EUA"
+            }
+        },
+        "streaming": {
+            "id": 1,
+            "name": "DisneyPlus",
+            "url": "http://www.disneyplus.com.br"
+        },
+        "actors": [
+            {
+                "id": 1,
+                "name": "Samuel L. Jackson"
+            },
+            {
+                "id": 2,
+            }
+         ]
+        }
