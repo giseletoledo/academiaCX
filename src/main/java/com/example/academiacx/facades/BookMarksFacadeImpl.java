@@ -5,6 +5,7 @@ import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.DirectorModel;
 import com.example.academiacx.models.MovieModel;
 import com.example.academiacx.models.UserModel;
+import com.example.academiacx.models.dto.MovieDto;
 import com.example.academiacx.models.dto.UserBookmarkDto;
 import com.example.academiacx.models.dto.UserDto;
 import com.example.academiacx.services.inter.MovieService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookMarksFacadeImpl implements BookMarksFacade {
@@ -58,13 +60,14 @@ public class BookMarksFacadeImpl implements BookMarksFacade {
 
         return userBookmarkDto;
     }
-
     public void saveFavorites(Long userId, List<Long> movieIds) {
         Logger logger = LoggerFactory.getLogger(getClass());
         try {
             Optional<UserModel> userModelOptional = userService.findById(userId);
             if (userModelOptional.isPresent()) {
                 UserModel user = userModelOptional.get();
+                UserBookmarkDto userBookmarkDto = new UserBookmarkDto();
+                UserDto userDto = new UserDto(user);
 
                 for (Long movieId : movieIds) {
                     Optional<MovieModel> movieOptional = movieService.findById(movieId);
@@ -75,8 +78,15 @@ public class BookMarksFacadeImpl implements BookMarksFacade {
                         throw new ResourceNotFoundException("Movie with id " + movieId + " not found");
                     }
                 }
+
+                // Atualiza o usuário no banco de dados
                 userService.update(user);
                 logger.info("Favorite movies saved successfully for user with id {}", userId);
+
+                // Adiciona os dados ao UserBookmarkDto
+                userBookmarkDto.setUserDto(userDto);
+                userBookmarkDto.setMovies(user.getFavoritesMovies());
+                userBookmarkDto.setDirectors(new ArrayList<DirectorModel>());
             } else {
                 throw new ResourceNotFoundException("User with id " + userId + " not found");
             }
@@ -86,4 +96,6 @@ public class BookMarksFacadeImpl implements BookMarksFacade {
             logger.error("Exception: {}", e.getMessage());
         }
     }
+
+
 }
