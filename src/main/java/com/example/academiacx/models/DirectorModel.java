@@ -1,5 +1,6 @@
 package com.example.academiacx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +19,6 @@ public class DirectorModel {
     private String name;
 
     @ManyToMany
-    @JsonManagedReference("movies")
     @JoinTable(
             name = "director_movie",
             joinColumns = @JoinColumn(name = "director_id"),
