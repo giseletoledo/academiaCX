@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -29,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+                .toList();
 
         return new User(user.getUsername(), user.getPassword(), authorities);
     }

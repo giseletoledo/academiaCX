@@ -32,10 +32,15 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
                         authorizeConfig -> {
                             authorizeConfig.requestMatchers("/public").permitAll();
                             authorizeConfig.requestMatchers("/logout").permitAll();
+                            authorizeConfig.requestMatchers(request -> {
+                                String path = request.getServletPath();
+                                return path.equals("/public") || path.startsWith("/users");
+                            }).permitAll();
                             authorizeConfig.anyRequest().authenticated();
                         })
                 .httpBasic(Customizer.withDefaults()) // Enable basic authentication

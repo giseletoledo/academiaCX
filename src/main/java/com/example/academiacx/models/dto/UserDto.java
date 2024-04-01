@@ -11,7 +11,6 @@ public class UserDto {
 
     public UserDto() {
     }
-
     public UserDto(UserModel userModel) {
 
         this.id = userModel.getId();
@@ -19,7 +18,6 @@ public class UserDto {
         this.email = userModel.getEmail();
         this.username = userModel.getUsername();
     }
-
     public Long getId() {
         return id;
     }
@@ -69,6 +67,4 @@ public class UserDto {
                 ", email='" + email + '\'' +
                 '}';
     }
-
-
 }

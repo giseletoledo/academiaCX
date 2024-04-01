@@ -1,6 +1,5 @@
 package com.example.academiacx.services;
 
-
 import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.UserModel;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class UserServiceImpl implements UserService {
 

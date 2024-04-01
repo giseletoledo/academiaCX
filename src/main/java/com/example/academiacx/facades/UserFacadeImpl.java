@@ -34,35 +34,36 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public UserModel create(UserDto userDto) {
         UserModel userModel = new UserModel();
+        userModel.setName(userDto.getName());
+        userModel.setEmail(userDto.getEmail());
         userModel.setUsername(userDto.getUsername());
-        userModel.setPassword(hashPassword(userDto.getPassword())); // criptografia da senha
+        userModel.setPassword(userDto.getPassword()); // tem criptografia na senha
 
         return userService.create(userModel);
     }
-
 
     @Override
     public UserModel update(Long id, UserDto userDto) {
         UserModel userModel = new UserModel();
         userModel.setId(id);
+        userModel.setName(userDto.getName());
+        userModel.setEmail(userDto.getEmail());
         userModel.setUsername(userModel.getUsername());
-        userModel.setPassword(hashPassword(userModel.getPassword()));
+        userModel.setPassword(userModel.getPassword());
 
         return userService.update(userModel);
     }
-
     @Override
     public Boolean delete(Long id) {
         userService.delete(id);
         return true;
     }
-
     @Override
     public UserModel findByUsername(String username) {
         return userService.findByUsername(username);
     }
 
-    private String hashPassword(String password) {
+    /*private String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes());
@@ -71,5 +72,5 @@ public class UserFacadeImpl implements UserFacade {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
 }
