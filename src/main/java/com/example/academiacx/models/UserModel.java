@@ -21,19 +21,15 @@ public class UserModel {
     private String username;
 
     private String email;
-
     private String password;
-
     @ManyToMany
     @JsonManagedReference
     @JsonIgnore
     private List<RoleModel> roles;
-
     @ManyToMany
     @JsonManagedReference
     @JsonIgnore
     private List<MovieModel> favoritesMovies;
-
 
     public UserModel() {
     }
@@ -84,6 +80,8 @@ public class UserModel {
         this.username = username;
     }
 
+   /* public String getRole() {
+    }*/
 
     public List<RoleModel> getRoles() {
         return roles;

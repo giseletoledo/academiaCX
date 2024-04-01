@@ -16,4 +16,8 @@ public interface UserService {
     UserModel update(UserModel userModel);
 
     boolean delete(Long id);
+
+    UserModel findByUsername(String username);
+
+    Optional<Object> findByEmail(String username);
 }

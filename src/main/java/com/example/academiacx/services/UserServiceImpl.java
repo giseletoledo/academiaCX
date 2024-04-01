@@ -21,9 +21,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     public PasswordEncoder passwordEncoder()
-   {
-       return new BCryptPasswordEncoder();
-   }
+    {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     public List<UserModel> listUsers() {
@@ -74,5 +74,15 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException("Id informado não encontrado!");
         }
 
+    }
+
+    @Override
+    public UserModel findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Optional<Object> findByEmail(String email) {
+        return Optional.ofNullable(userRepository.findByEmail(email));
     }
 }

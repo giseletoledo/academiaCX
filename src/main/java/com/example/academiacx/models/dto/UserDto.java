@@ -7,6 +7,7 @@ public class UserDto {
     private String name;
     private String username;
     private String email;
+    private String password;
 
     public UserDto() {
     }
@@ -51,6 +52,14 @@ public class UserDto {
         this.username = username;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "UserDto{" +
@@ -60,4 +69,6 @@ public class UserDto {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+
 }

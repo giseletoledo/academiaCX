@@ -1,15 +1,16 @@
 package com.example.academiacx.controller;
 
+import com.example.academiacx.facades.UserFacadeImpl;
 import com.example.academiacx.facades.inter.BookMarksFacade;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.UserBookmarkRequest;
 import com.example.academiacx.models.UserModel;
 import com.example.academiacx.models.dto.UserBookmarkDto;
+import com.example.academiacx.models.dto.UserDto;
 import com.example.academiacx.services.inter.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
@@ -25,7 +26,7 @@ public class UserController {
 
 
     @Autowired
-    private UserService userService;
+    private UserFacadeImpl userFacade;
 
     @Autowired
     private BookMarksFacade bookMarksFacade;
@@ -33,24 +34,15 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserModel>> findAll()
     {
-        List<UserModel> response = userService.listUsers();
+        List<UserModel> response = userFacade.findAll();
 
         return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
-
-    /*@PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/users")
-    public ResponseEntity<List<UserModel>> findAll() {
-
-        List<UserModel> response = userService.listUsers();
-        return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
-    }
-*/
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Optional<UserModel>> findById(@PathVariable Long id)
     {
-        Optional<UserModel> response = userService.findById(id);
+        Optional<UserModel> response = userFacade.findById(id);
 
         return response.isPresent() ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
@@ -64,25 +56,32 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserModel> save(@RequestBody UserModel userModel)
-    {
-        UserModel response = userService.create(userModel);
+    public ResponseEntity<UserModel> save(@RequestBody UserDto userDto) {
+        if (userDto == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        UserModel response = userFacade.create(userDto);
 
         return response != null ? ResponseEntity.ok(response) : ResponseEntity.badRequest().build();
     }
 
-    @PutMapping
-    public ResponseEntity<UserModel> update(@RequestBody UserModel userModel)
-    {
-        UserModel response = userService.update(userModel);
+    @PutMapping("/{id}")
+    public ResponseEntity<UserModel> update(@PathVariable Long id, @RequestBody UserDto userDto) {
+        if (id == null || userDto == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        return response != null ? ResponseEntity.ok(response) : ResponseEntity.badRequest().build();
+        UserModel updatedUser = userFacade.update(id, userDto);
+
+        return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.badRequest().build();
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
 
-        Boolean success = userService.delete(id);
+        Boolean success = userFacade.delete(id);
 
         return Boolean.TRUE.equals(success) ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
     }
