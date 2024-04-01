@@ -6,9 +6,6 @@ import com.example.academiacx.models.dto.UserDto;
 import com.example.academiacx.services.UserServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,15 +59,4 @@ public class UserFacadeImpl implements UserFacade {
     public UserModel findByUsername(String username) {
         return userService.findByUsername(username);
     }
-
-    /*private String hashPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            return Base64.getEncoder().encodeToString(hash);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }*/
 }
