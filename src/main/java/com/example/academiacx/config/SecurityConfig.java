@@ -1,10 +1,12 @@
 package com.example.academiacx.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -20,10 +22,7 @@ public class SecurityConfig {
                             authorizeConfig.requestMatchers("/logout").permitAll();
                             authorizeConfig.anyRequest().authenticated();
                         })
-                .oauth2Login(Customizer.withDefaults())
-                .oauth2ResourceServer(config -> {
-                    config.jwt(Customizer.withDefaults());
-                })
+                .httpBasic(Customizer.withDefaults()) // Enable basic authentication
                 .build();
     }
 

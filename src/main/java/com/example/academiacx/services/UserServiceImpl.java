@@ -3,11 +3,12 @@ package com.example.academiacx.services;
 
 import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
-import com.example.academiacx.models.MovieModel;
 import com.example.academiacx.models.UserModel;
 import com.example.academiacx.repository.UserRepository;
 import com.example.academiacx.services.inter.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +20,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    public PasswordEncoder passwordEncoder()
-//    {
-//        return new BCryptPasswordEncoder();
-//    }
+    public PasswordEncoder passwordEncoder()
+   {
+       return new BCryptPasswordEncoder();
+   }
 
     @Override
     public List<UserModel> listUsers() {
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidParamException("Usuario ja existe");
         }
 
-//        userModel.setPassword(passwordEncoder().encode(userModel.getPassword()));
+        userModel.setPassword(passwordEncoder().encode(userModel.getPassword()));
 
         return userRepository.save(userModel);
     }

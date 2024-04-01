@@ -9,6 +9,7 @@ import com.example.academiacx.services.inter.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
@@ -36,6 +37,15 @@ public class UserController {
 
         return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
+
+    /*@PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/users")
+    public ResponseEntity<List<UserModel>> findAll() {
+
+        List<UserModel> response = userService.listUsers();
+        return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
+    }
+*/
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Optional<UserModel>> findById(@PathVariable Long id)
