@@ -1,12 +1,16 @@
 package com.example.academiacx.data;
 
 import com.example.academiacx.models.*;
+import com.example.academiacx.models.security.RoleModel;
+import com.example.academiacx.repository.RoleRepository;
+import com.example.academiacx.repository.UserRepository;
 import com.example.academiacx.services.inter.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -14,6 +18,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,15 +41,52 @@ public class DataInitialization implements CommandLineRunner {
     private StudioService studioService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private FranchiseService franchiseService;
 
     @Autowired
     private StreamingService streamingService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         try {
+            RoleModel roleAdmin = new RoleModel();
+            roleAdmin.setName("ADMIN");
+            roleAdmin = roleRepository.save(roleAdmin);
+
+            RoleModel roleUser = new RoleModel();
+            roleUser.setName("USER");
+            roleUser = roleRepository.save(roleUser);
+
+            List<RoleModel> roles = new ArrayList<>();
+            roles.add(roleAdmin);
+            roles.add(roleUser);
+
+            UserModel user = new UserModel();
+            user.setName("Estela");
+            user.setUsername("user");
+            user.setEmail("estela@gmail.com");
+            user.setPassword(passwordEncoder.encode("123456"));
+            user.setRoles(roles);
+            userRepository.save(user);
+
+            UserModel admin = new UserModel();
+            admin.setName("Cláudia");
+            admin.setUsername("admin");
+            admin.setEmail("claudia@gmail.com");
+            admin.setPassword(passwordEncoder.encode("123456"));
+            admin.setRoles(Collections.singletonList(roleAdmin)); // Admin só tem uma função
+            userRepository.save(admin);
+
             // Mock dos dados para cadastrar filmes
             StudioModel studio = new StudioModel("Marvel Studios","EUA");
             GenreModel genre = new GenreModel("Ação");
@@ -52,19 +94,6 @@ public class DataInitialization implements CommandLineRunner {
             // Salvar genero e studio, por causa dos relacionamentos de tabela
             studioService.create(studio);
             genreService.create(genre);
-
-            // Criando alguns diretores
-            DirectorModel director1 = new DirectorModel("Joe Russo");
-            directorService.create(director1);
-
-            DirectorModel director2 = new DirectorModel("Anthony Russo");
-            directorService.create(director2);
-
-            DirectorModel director3 = new DirectorModel("Jon Watts");
-            directorService.create(director3);
-
-            DirectorModel director4 = new DirectorModel("John Fraveau");
-            directorService.create(director4);
 
             // Adicionando atores
             List<ActorModel> actors = new ArrayList<>();
@@ -119,11 +148,11 @@ public class DataInitialization implements CommandLineRunner {
             movieService.create(movieAvengers);
             movieService.create(movieSpiderman);
 
-            Long userId = 1L;
-            Long movieId = 1L;
+        /*    Long userId = 1L;
+            List<Long> movieIds = List.of(1L, 2L);
 
             // Construir o objeto JSON com o ID do filme
-            String requestBody = "{\"movieIds\":" + movieId + "}";
+            String requestBody = "{\"movieIds\":" + movieIds.toString() + "}";
 
             // Criar um cliente HTTP
             HttpClient client = HttpClient.newHttpClient();
@@ -143,7 +172,7 @@ public class DataInitialization implements CommandLineRunner {
                 System.out.println("Movie added to favorites successfully.");
             } else {
                 System.out.println("Failed to add movie to favorites: " + response.body());
-            }
+            }*/
 
             // Listando todos os filmes
             System.out.println("All Movies:");
