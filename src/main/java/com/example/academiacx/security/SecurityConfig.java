@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +20,9 @@ public class SecurityConfig {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CustomBasicAuthFilter customBasicAuthFilter;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -36,6 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeConfig -> {
                             authorizeConfig.requestMatchers("/public").permitAll();
+                            //authorizeConfig.requestMatchers("/users").permitAll();
                             authorizeConfig.requestMatchers("/logout").permitAll();
                             authorizeConfig.requestMatchers(request -> {
                                 String path = request.getServletPath();
@@ -44,6 +49,7 @@ public class SecurityConfig {
                             authorizeConfig.anyRequest().authenticated();
                         })
                 .httpBasic(Customizer.withDefaults()) // Enable basic authentication
+                .addFilterBefore(customBasicAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
