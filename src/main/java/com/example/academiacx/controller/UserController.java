@@ -5,14 +5,17 @@ import com.example.academiacx.facades.inter.BookMarksFacade;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.UserBookmarkRequest;
 import com.example.academiacx.models.UserModel;
+import com.example.academiacx.models.dto.ObjectMapperUtils;
+import com.example.academiacx.models.dto.ResponseDto;
 import com.example.academiacx.models.dto.UserBookmarkDto;
 import com.example.academiacx.models.dto.UserDto;
-import com.example.academiacx.services.inter.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import java.util.List;
@@ -23,28 +26,50 @@ import java.util.Optional;
 public class UserController {
 
     private static final Logger logger = Logger.getLogger(UserController.class.getName());
+    private final ModelMapper modelMapper;
 
+    public UserController(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @Autowired
     private UserFacadeImpl userFacade;
 
     @Autowired
     private BookMarksFacade bookMarksFacade;
-
     @GetMapping
+    public ResponseEntity<?> findAll() {
+        List<UserModel> users = userFacade.findAll();
+
+        if (users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDto("Não tem usuários cadastrados", 404));
+        }
+
+        List<UserDto> userDTOs = new ArrayList<>();
+        ObjectMapperUtils.populateUserDtos(users, userDTOs);
+        return ResponseEntity.ok(userDTOs);
+    }
+
+   /* @GetMapping
     public ResponseEntity<List<UserModel>> findAll()
     {
         List<UserModel> response = userFacade.findAll();
 
         return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
-    }
+    }*/
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<UserModel>> findById(@PathVariable Long id)
-    {
+    public ResponseEntity<Optional<UserDto>> findById(@PathVariable Long id) {
         Optional<UserModel> response = userFacade.findById(id);
 
-        return response.isPresent() ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
+        if (response.isPresent()) {
+            UserModel user = response.get();
+            UserDto userDTO = modelMapper.map(user, UserDto.class);
+            return ResponseEntity.ok(Optional.of(userDTO));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping(value = "/bookmark/{id}")
@@ -54,6 +79,8 @@ public class UserController {
 
         return response != null ? ResponseEntity.ok(response) : ResponseEntity.notFound().build();
     }
+
+
 
     @PostMapping
     public ResponseEntity<UserModel> save(@RequestBody UserDto userDto) {
