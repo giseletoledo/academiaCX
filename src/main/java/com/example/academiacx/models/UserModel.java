@@ -34,6 +34,27 @@ public class UserModel {
     @JsonIgnore
     private List<MovieModel> favoritesMovies;
 
+    @Embedded
+    @Column(name = "endereco")
+    private Address address;
+
+    public UserModel(String name, String username, String email, String password, List<RoleModel> roles, List<MovieModel> favoritesMovies, Address address) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.favoritesMovies = favoritesMovies;
+        this.address = address;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public UserModel() {
     }
