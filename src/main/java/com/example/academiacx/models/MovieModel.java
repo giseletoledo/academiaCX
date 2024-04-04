@@ -33,9 +33,13 @@ public class MovieModel {
     @JoinColumn(name = "franchise_id")
     private FranchiseModel franchise;
 
-    @NotNull
-    @Valid
-    @ManyToMany(mappedBy = "movies", cascade = CascadeType.MERGE)
+   /* @NotNull
+    @Valid*/
+    @ManyToMany
+    @JoinTable(
+            name = "movie_director",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "director_id"))
     private List<DirectorModel> directors;
 
     @ManyToOne

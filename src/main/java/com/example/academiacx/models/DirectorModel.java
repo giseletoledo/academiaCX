@@ -18,11 +18,9 @@ public class DirectorModel {
     @NotBlank(message = "O nome do diretor é obrigatório")
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "director_movie",
-            joinColumns = @JoinColumn(name = "director_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    @ManyToMany(mappedBy = "directors")
+    @JsonIgnore
+    @JsonManagedReference
     private List<MovieModel> movies;
 
     public Long getId() {

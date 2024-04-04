@@ -42,8 +42,10 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     GenreRepository genreRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
+    @Autowired
+    StreamingRepository streamingRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
 
     @Override
     public List<MovieModel> list() {
@@ -60,7 +62,7 @@ public class MovieServiceImpl implements MovieService {
         // Verificar se o estúdio está cadastrado
         Optional<StudioModel> studio = studioRepository.findById(movieModel.getStudio().getId());
         if (studio.isEmpty()) {
-            logger.error("Estúdio não encontrado com ID: {}", movieModel.getStudio().getId());
+            logger.error("Estúdio não encontrado com ID S: {}", movieModel.getStudio().getId());
             // Tratar a situação em que o estúdio não está cadastrado
             throw new InvalidParamException("Estúdio não encontrado com ID: " + movieModel.getStudio().getId());
         }
@@ -69,17 +71,10 @@ public class MovieServiceImpl implements MovieService {
         for (ActorModel actor : movieModel.getActors()) {
             Optional<ActorModel> actorOptional = actorRepository.findById(actor.getId());
             if (actorOptional.isEmpty()) {
-                logger.error("Ator não encontrado com ID: {}", actor.getId());
+                logger.error("Ator não encontrado com ID A: {}", actor.getId());
                 // Tratar a situação em que um ator não está cadastrado
                 throw new InvalidParamException("Ator não encontrado com ID: " + actor.getId());
             }
-        }
-
-        // Verificar se os franquias estão cadastradas
-        Optional<FranchiseModel> franchiseModel = franchiseRepository.findById(movieModel.getFranchise().getId());
-        if (franchiseModel.isEmpty()) {
-            logger.error("Franquia não encontrado com ID: {}", movieModel.getFranchise().getId());
-            throw new InvalidParamException("Franquia não encontrado com ID: " + movieModel.getFranchise().getId());
         }
 
         // Verificar se os diretores estão cadastrados
@@ -88,8 +83,21 @@ public class MovieServiceImpl implements MovieService {
             if (directorOptional.isEmpty()) {
                 logger.error("Diretor não encontrado com ID: {}", director.getId());
                 // Tratar a situação em que um diretor não está cadastrado
-                throw new InvalidParamException("Diretor não encontrado com ID: " + director.getId());
+                throw new InvalidParamException("Diretor não encontrado com ID DR: " + director.getId());
             }
+        }
+
+        // Verificar se os franquias estão cadastradas
+        Optional<FranchiseModel> franchiseOptinal = franchiseRepository.findById(movieModel.getFranchise().getId());
+        if (franchiseOptinal.isEmpty()) {
+            logger.error("Franquia não encontrado com ID: {}", movieModel.getFranchise().getId());
+            throw new InvalidParamException("Franquia não encontrado com ID F: " + movieModel.getFranchise().getId());
+        }
+
+        Optional<StreamingModel> streamingOptinal = streamingRepository.findById(movieModel.getStreaming().getId());
+        if (streamingOptinal.isEmpty()) {
+            logger.error("Streaming não encontrado com ID: {}", movieModel.getStreaming().getId());
+            throw new InvalidParamException("Streaming não encontrado com ID ST: " + movieModel.getStreaming().getId());
         }
 
         // Verificar se o gênero está cadastrado
@@ -97,7 +105,7 @@ public class MovieServiceImpl implements MovieService {
         if (genre.isEmpty()) {
             logger.error("Gênero não encontrado com ID: {}", movieModel.getGenre().getId());
             // Tratar a situação em que o gênero não está cadastrado
-            throw new InvalidParamException("Gênero não encontrado com ID: " + movieModel.getGenre().getId());
+            throw new InvalidParamException("Gênero não encontrado com ID GR: " + movieModel.getGenre().getId());
         }
 
         // Se todas as validações passaram, salvar o filme
@@ -105,7 +113,6 @@ public class MovieServiceImpl implements MovieService {
         logger.info("Filme salvo com sucesso: {}", movieSaved.getTitle());
         return movieSaved;
     }
-
 
     @Override
     public MovieModel update(MovieModel movie) {
