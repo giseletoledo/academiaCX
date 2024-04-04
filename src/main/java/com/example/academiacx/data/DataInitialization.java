@@ -92,7 +92,7 @@ public class DataInitialization implements CommandLineRunner {
                 System.out.println("**ID:** " + userData.getId());
                 System.out.println("**Name:** " + userData.getName());
                 System.out.println("**Username:** " + userData.getUsername());
-                //System.out.println("**Address:** " + userData.getAddress());
+                System.out.println("**Address:** " + userData.getAddress());
                 System.out.println("**Email:** " + userData.getEmail());
                 System.out.println("**Roles:** " + userData.getRoles());
                 System.out.println("-----------------------");
@@ -199,7 +199,7 @@ public class DataInitialization implements CommandLineRunner {
             } else {
                 System.out.println("Failed to add movie to favorites: " + response.body());
             }
-
+*/
             // Listando todos os filmes
             System.out.println("All Movies:");
             movieService.list().forEach(movie -> {
@@ -211,7 +211,7 @@ public class DataInitialization implements CommandLineRunner {
                 System.out.println("Franchise: " + movie.getFranchise().getName());
                 System.out.println("Streaming: " + movie.getStreaming().getName());
                 System.out.println("-----------------------------");
-            });*/
+            });
         } catch (Exception e) {
             // Lidar com exceções gerais
             System.err.println("Erro ao inicializar dados: " + e.getMessage());
