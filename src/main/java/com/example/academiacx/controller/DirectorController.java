@@ -3,6 +3,7 @@ package com.example.academiacx.controller;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.DirectorModel;
 
+import com.example.academiacx.models.dto.DirectorDto;
 import com.example.academiacx.services.inter.DirectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,8 @@ public class DirectorController {
     }
 
     @PostMapping
-    public ResponseEntity<DirectorModel> createDirector(@RequestBody DirectorModel director) {
+    public ResponseEntity<DirectorModel> createDirector(@RequestBody DirectorDto directordto) {
+        DirectorModel director = new DirectorModel(directordto.getName());
         DirectorModel newDirector = directorService.create(director);
         return ResponseEntity.status(HttpStatus.CREATED).body(newDirector);
     }

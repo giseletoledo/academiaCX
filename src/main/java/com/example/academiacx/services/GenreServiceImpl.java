@@ -34,7 +34,6 @@ public class GenreServiceImpl implements GenreService {
         return genreRepository.save(genreModel);
     }
 
-
     @Override
     public GenreModel update(GenreModel genreModel) {
         return genreRepository.save(genreModel);

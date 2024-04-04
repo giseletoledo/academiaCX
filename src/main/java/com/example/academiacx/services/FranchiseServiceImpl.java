@@ -1,12 +1,17 @@
 package com.example.academiacx.services;
 
+import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.models.FranchiseModel;
 import com.example.academiacx.models.GenreModel;
 import com.example.academiacx.models.StudioModel;
 import com.example.academiacx.repository.FranchiseRepository;
+import com.example.academiacx.repository.GenreRepository;
+import com.example.academiacx.repository.StudioRepository;
 import com.example.academiacx.services.inter.FranchiseService;
 import com.example.academiacx.services.inter.GenreService;
 import com.example.academiacx.services.inter.StudioService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +25,19 @@ public class FranchiseServiceImpl implements FranchiseService {
     private FranchiseRepository franchiseRepository;
 
     @Autowired
+    StudioRepository studioRepository;
+
+    @Autowired
+    GenreRepository genreRepository;
+
+    @Autowired
     private GenreService genreService;
 
     @Autowired
     private StudioService studioService;
+
+    private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
+
 
     @Override
     public List<FranchiseModel> findAll() {
@@ -37,31 +51,25 @@ public class FranchiseServiceImpl implements FranchiseService {
 
     @Override
     public FranchiseModel create(FranchiseModel franchise) {
-        // Verificar se o gênero da franquia está nulo
-        if (franchise.getGenre() == null) {
-            throw new IllegalArgumentException("O gênero da franquia não pode ser nulo");
-        }
+        Optional<StudioModel> studioOptional = studioRepository.findById(franchise.getStudio().getId());
+        StudioModel studio = studioOptional.orElseThrow(() -> {
+            logger.error("Estúdio não encontrado com ID: {}", franchise.getStudio().getId());
+            return new InvalidParamException("Estúdio não encontrado com ID: " + franchise.getStudio().getId());
+        });
 
-        // Verificar se o estúdio da franquia está nulo
-        if (franchise.getStudio() == null) {
-            throw new IllegalArgumentException("O estúdio da franquia não pode ser nulo");
-        }
+        Optional<GenreModel> genreOptional = genreRepository.findById(franchise.getGenre().getId());
+        GenreModel genre = genreOptional.orElseThrow(() -> {
+            logger.error("Gênero não encontrado com ID: {}", franchise.getGenre().getId());
+            return new InvalidParamException("Gênero não encontrado com ID: " + franchise.getGenre().getId());
+        });
 
-        // Buscar o gênero pelo ID e lançar uma exceção se não for encontrado
-        GenreModel genre = genreService.findById(franchise.getGenre().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Gênero não encontrado"));
-
-        // Buscar o estúdio pelo ID e lançar uma exceção se não for encontrado
-        StudioModel studio = studioService.findById(franchise.getStudio().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Estúdio não encontrado"));
-
-        // Definir o gênero e o estúdio na franquia
         franchise.setGenre(genre);
         franchise.setStudio(studio);
 
-        // Salvar a franquia no banco de dados
         return franchiseRepository.save(franchise);
     }
+
+
 
 
     @Override

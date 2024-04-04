@@ -2,9 +2,8 @@ package com.example.academiacx.services;
 
 import com.example.academiacx.handlers.exceptions.InvalidParamException;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
-import com.example.academiacx.models.MovieModel;
-import com.example.academiacx.models.UserModel;
-import com.example.academiacx.repository.MovieRepository;
+import com.example.academiacx.models.*;
+import com.example.academiacx.repository.*;
 import com.example.academiacx.services.inter.FranchiseService;
 import com.example.academiacx.services.inter.MovieService;
 import com.example.academiacx.services.inter.UserService;
@@ -23,10 +22,25 @@ public class MovieServiceImpl implements MovieService {
     MovieRepository movieRepository;
 
     @Autowired
+    ActorRepository actorRepository;
+
+    @Autowired
+    StudioRepository studioRepository;
+
+    @Autowired
+    FranchiseRepository franchiseRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
     FranchiseService franchiseService;
+
+    @Autowired
+    DirectorRepository directorRepository;
+
+    @Autowired
+    GenreRepository genreRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
 
@@ -43,11 +57,55 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieModel create(MovieModel movieModel) {
+        // Verificar se o estúdio está cadastrado
+        Optional<StudioModel> studio = studioRepository.findById(movieModel.getStudio().getId());
+        if (studio.isEmpty()) {
+            logger.error("Estúdio não encontrado com ID: {}", movieModel.getStudio().getId());
+            // Tratar a situação em que o estúdio não está cadastrado
+            throw new InvalidParamException("Estúdio não encontrado com ID: " + movieModel.getStudio().getId());
+        }
 
+        // Verificar se os atores estão cadastrados
+        for (ActorModel actor : movieModel.getActors()) {
+            Optional<ActorModel> actorOptional = actorRepository.findById(actor.getId());
+            if (actorOptional.isEmpty()) {
+                logger.error("Ator não encontrado com ID: {}", actor.getId());
+                // Tratar a situação em que um ator não está cadastrado
+                throw new InvalidParamException("Ator não encontrado com ID: " + actor.getId());
+            }
+        }
+
+        // Verificar se os franquias estão cadastradas
+        Optional<FranchiseModel> franchiseModel = franchiseRepository.findById(movieModel.getFranchise().getId());
+        if (franchiseModel.isEmpty()) {
+            logger.error("Franquia não encontrado com ID: {}", movieModel.getFranchise().getId());
+            throw new InvalidParamException("Franquia não encontrado com ID: " + movieModel.getFranchise().getId());
+        }
+
+        // Verificar se os diretores estão cadastrados
+        for (DirectorModel director : movieModel.getDirectors()) {
+            Optional<DirectorModel> directorOptional = directorRepository.findById(director.getId());
+            if (directorOptional.isEmpty()) {
+                logger.error("Diretor não encontrado com ID: {}", director.getId());
+                // Tratar a situação em que um diretor não está cadastrado
+                throw new InvalidParamException("Diretor não encontrado com ID: " + director.getId());
+            }
+        }
+
+        // Verificar se o gênero está cadastrado
+        Optional<GenreModel> genre = genreRepository.findById(movieModel.getGenre().getId());
+        if (genre.isEmpty()) {
+            logger.error("Gênero não encontrado com ID: {}", movieModel.getGenre().getId());
+            // Tratar a situação em que o gênero não está cadastrado
+            throw new InvalidParamException("Gênero não encontrado com ID: " + movieModel.getGenre().getId());
+        }
+
+        // Se todas as validações passaram, salvar o filme
         MovieModel movieSaved = movieRepository.save(movieModel);
         logger.info("Filme salvo com sucesso: {}", movieSaved.getTitle());
         return movieSaved;
     }
+
 
     @Override
     public MovieModel update(MovieModel movie) {

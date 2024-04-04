@@ -31,7 +31,7 @@ public class FranchiseModel {
     @JoinColumn(name = "studio_id")
     private StudioModel studio;
 
-    @NotNull(message = "Os Filmes da franquia é obrigatório")
+    //@NotNull(message = "Os Filmes da franquia é obrigatório")
     @Valid
     @JsonIgnore
     @OneToMany(mappedBy = "franchise", cascade = CascadeType.PERSIST)
