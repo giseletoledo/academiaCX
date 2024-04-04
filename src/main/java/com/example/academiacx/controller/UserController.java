@@ -1,6 +1,8 @@
 package com.example.academiacx.controller;
 
+import com.example.academiacx.dto.ResponseDto;
 import com.example.academiacx.facades.inter.BookMarksFacade;
+import com.example.academiacx.facades.inter.UserFacade;
 import com.example.academiacx.handlers.exceptions.ResourceNotFoundException;
 import com.example.academiacx.models.UserBookmarkRequest;
 import com.example.academiacx.models.UserModel;
@@ -25,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserFacade userFacade;
 
     @Autowired
     private BookMarksFacade bookMarksFacade;
@@ -91,6 +96,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to save favorite movies: " + e.getMessage());
         }
+    }
+
+    @PostMapping("/{userId}/cep/{cep}")
+    public ResponseEntity<ResponseDto> updateUserCep(@PathVariable Long userId, @PathVariable String cep) {
+        userFacade.updateUserCep(userId, cep);
+
+        // Cria a mensagem de sucesso
+        ResponseDto responseDto = new ResponseDto("Usuário salvo com sucesso", HttpStatus.OK.value());
+
+        return ResponseEntity.ok(responseDto);
     }
 
 }
