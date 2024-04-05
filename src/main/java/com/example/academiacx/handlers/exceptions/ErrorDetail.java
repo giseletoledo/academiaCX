@@ -1,5 +1,7 @@
 package com.example.academiacx.handlers.exceptions;
 
+import java.util.List;
+
 public class ErrorDetail {
 
     private String campo;
@@ -8,7 +10,7 @@ public class ErrorDetail {
     private Long status;
     private Long timestamp;
     private String mensagemDesenvolvedor;
-
+    private List<String> errors;
 
     public ErrorDetail() {
 
@@ -29,6 +31,9 @@ public class ErrorDetail {
         this.timestamp = timestamp;
         this.mensagemDesenvolvedor = mensagemDesenvolvedor;
         this.campo =  campo;
+    }
+
+    public ErrorDetail(List<String> errors) {
     }
 
     public String getCampo() {
