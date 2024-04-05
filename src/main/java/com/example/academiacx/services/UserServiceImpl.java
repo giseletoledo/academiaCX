@@ -85,6 +85,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserModel findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
     public AddressDto getAddressWithFeignByCep(String cep, Long userId) {
         try {
 

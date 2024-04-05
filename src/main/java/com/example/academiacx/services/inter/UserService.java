@@ -18,5 +18,7 @@ public interface UserService {
 
     boolean delete(Long id);
 
+    UserModel findByUsername(String username);
+
     AddressDto getAddressWithFeignByCep(String cep, Long userId);
 }
