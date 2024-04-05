@@ -1,6 +1,7 @@
 package com.example.academiacx.services.inter;
 
 import com.example.academiacx.models.UserModel;
+import com.example.academiacx.models.dto.AddressDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +17,6 @@ public interface UserService {
     UserModel update(UserModel userModel);
 
     boolean delete(Long id);
+
+    AddressDto getAddressWithFeignByCep(String cep, Long userId);
 }

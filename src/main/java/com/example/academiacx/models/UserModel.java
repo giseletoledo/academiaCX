@@ -17,24 +17,20 @@ public class UserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
     private String username;
-
     private String email;
-
     private String password;
-
     @ManyToMany
     @JsonManagedReference
     @JsonIgnore
     private List<RoleModel> roles;
-
     @ManyToMany
     @JsonManagedReference
     @JsonIgnore
     private List<MovieModel> favoritesMovies;
-
-
+    @Embedded
+    @Column(name = "endereco")
+    private AddressModel address;
     public UserModel() {
     }
 
@@ -84,6 +80,13 @@ public class UserModel {
         this.username = username;
     }
 
+    public AddressModel getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressModel address) {
+        this.address = address;
+    }
 
     public List<RoleModel> getRoles() {
         return roles;
