@@ -14,6 +14,7 @@ Obs: Descrição da API atualizada no link do postman na descrição ao lado.
 ### GET /users
 
 Este endpoint envia uma solicitação HTTP GET para recuperar uma lista de usuários do servidor.
+Security, colocar user e senha o código gerado, em progresso a funcionalidade.
 
 #### Requisição
 

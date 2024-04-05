@@ -7,10 +7,10 @@ public class UserDto {
     private String name;
     private String username;
     private String email;
+    private String password;
 
     public UserDto() {
     }
-
     public UserDto(UserModel userModel) {
 
         this.id = userModel.getId();
@@ -18,7 +18,6 @@ public class UserDto {
         this.email = userModel.getEmail();
         this.username = userModel.getUsername();
     }
-
     public Long getId() {
         return id;
     }
@@ -50,6 +49,15 @@ public class UserDto {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     @Override
     public String toString() {
