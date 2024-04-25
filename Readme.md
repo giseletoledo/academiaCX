@@ -4,10 +4,10 @@ A API de Gerenciamento de Filmes é uma aplicação para gerenciar informações
 Obs: Descrição da API atualizada no link do postman na descrição ao lado.
 
 🛠 Tecnologias
-Java 17
-JPA
-Banco de dados H2
-Postman
+- Java 17
+- JPA
+- Banco de dados H2
+- Postman
 
 ### Recursos Disponíveis
 **Filmes**: Os filmes são a entidade principal da API e possuem diversos atributos para descrever suas características.<br>
